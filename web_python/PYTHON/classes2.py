@@ -2,7 +2,7 @@
 class Flight:
     # Method to create new flight with given capacity
     def __init__(self, capacity):
-         #we store the value into a variable called capacity    
+        #we store the value into a variable called capacity    
         self.capacity = capacity
         #create a list of empty passenger
         self.passengers = []
