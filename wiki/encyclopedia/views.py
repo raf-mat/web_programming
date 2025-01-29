@@ -5,8 +5,9 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-class Search(forms.Form):
-    query = forms.CharField(label="Search Bar")
+class AddArticle(forms.Form):
+    title = forms.CharField(label="Title")
+    content = forms.CharField(widget=forms.Textarea(attrs={'rows':3, 'cols':100, 'size':8}), label="Text Area")
 
 def convert_md_to_html(title):
     content = util.get_entry(title)
@@ -19,7 +20,6 @@ def convert_md_to_html(title):
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries(),
-        "form": Search()
     })
 
 def entry(request, title):
@@ -39,7 +39,7 @@ def search(request):
         entry_search = request.POST['q']
         # converting entry search md file into html thanks to import markdown functions + storing into html_content variable
         html_content = convert_md_to_html(entry_search)
-        # if html_content is True 
+        # if html_content is known 
         if html_content is not None:
             return render(request, "encyclopedia/entry.html", {
                 "title": entry_search,
@@ -53,4 +53,28 @@ def search(request):
                     recommendation.append(entry)
             return render(request, "encyclopedia/search.html",{
                 "recommendation": recommendation
+                })
+
+
+def create(request):
+    if request.method == "GET":
+        return render (request, "encyclopedia/create.html", {
+            "form" : AddArticle()
+    })
+    else:
+        form = AddArticle(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+            titleExist = util.get_entry(title)
+            if titleExist is not None:
+                return render(request, "encyclopedia/error.html",{
+                    "message" : "Entry page already exist"
+                })
+            else:
+                util.save_entry(title, content)
+                html_content = convert_md_to_html(title)
+                return render(request,"encyclopedia/entry.html", {
+                    "title": title,
+                    "content": html_content
                 })
