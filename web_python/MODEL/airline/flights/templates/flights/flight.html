@@ -11,11 +11,21 @@
         {% for passenger in passengers %}
         <ul>
             <li> {{passenger}}</li>
-        <ul>
-        {% empty %}
-        <ul>
-            <li> No Passenger</li>
         </ul>
+        {% empty %}
+        <P>No Passenger</p>
         {% endfor %}
+    
+    <h2>Add a Passenger</h2>
         
+    <form action="{% url 'book' flight.id %}" method="post">
+        {% csrf_token %}
+        <select name="passenger" id="">
+            {% for passenger in non_passengers %}
+                <option value="{{ passenger.id }}">{{ passenger }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+        <a href="{% url 'index' %}">Back to flight list</a>
 {% endblock %}
