@@ -6,7 +6,7 @@
             {% for flight in flights %}
                 
                 <li>
-                <!-- the flight route requires an argument and we give him flighht.id as an argument-->
+                <!-- the flight route requires an argument and we give him flight.id as an argument-->
                 <a href ="{% url 'flight' flight.id %}">
                     Flight {{flight.id}} : {{flight.origin}} to {{flight.destination}}
                 </a>
