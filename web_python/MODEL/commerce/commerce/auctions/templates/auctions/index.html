@@ -3,7 +3,11 @@
 {% block body %}
 
 {% if user.is_authenticated %}
-
+<ul>
+{%for auction in auctionlisting %}
+    <li> {{auction.title}} {{auction.image}} 
+{% endfor %}
+</ul>
 {% else %}
 
 

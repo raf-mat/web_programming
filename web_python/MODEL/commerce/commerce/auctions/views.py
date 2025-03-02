@@ -3,13 +3,43 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from .models import AuctionListing
+from .forms import NewListing
 
 from .models import User
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "auctionlisting": AuctionListing.objects.all()
+    })
 
+def create(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the
+        form = NewListing(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create a new Auction instance using the data
+            new_listing = AuctionListing(
+            title=form.cleaned_data['title'], 
+            category=form.cleaned_data['category'],
+            description=form.cleaned_data['description'],
+            starting_bid=form.cleaned_data['starting_bid'],
+            image=form.cleaned_data['image'],
+            )
+            # Save the article to the database
+            new_listing.save()
+# return some response:
+            return HttpResponse("Thanks for your data!")
+    
+        # If the form was invalid send the user back to fix it
+        else:
+            return render(request, "auctions/create.html")
+        
+    return render(request, "auctions/create.html",{
+        "form": NewListing()
+    })
 
 def login_view(request):
     if request.method == "POST":
