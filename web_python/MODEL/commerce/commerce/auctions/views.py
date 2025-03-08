@@ -11,7 +11,7 @@ from .models import User
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "auctionlisting": AuctionListing.objects.all()
+        "auctionlisting": AuctionListing.objects.all(),
     })
 
 def create(request):

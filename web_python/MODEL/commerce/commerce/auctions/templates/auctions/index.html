@@ -5,7 +5,14 @@
 {% if user.is_authenticated %}
 <ul>
 {%for auction in auctionlisting %}
-    <li> {{auction.title}} {{auction.image}} 
+    <li class="auctionitem">
+        <div class="auctionlist-image">{% if auction.image %}<img width='200' height="100" class="image" src="{{ auction.image.url }}" alt="{{auction.title}}">{% endif %}</div> 
+        <div class="auctionlist-title"> {{auction.title}}</div>
+        <div class="auctionlist-category">Category: {{auction.category}}</div> 
+        <div class="auctionlist-startingbid">{{auction.starting_bid}} €</div>
+        <div class="auctionlist-date">Created {{auction.date}} {{auction.time}}</div>       
+    </li>
+    <br>
 {% endfor %}
 </ul>
 {% else %}
