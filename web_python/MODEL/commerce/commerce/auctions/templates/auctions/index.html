@@ -1,18 +1,25 @@
 {% extends "auctions/layout.html" %}
-
+{% load static %}
 {% block body %}
 
 {% if user.is_authenticated %}
 <ul>
 {%for auction in auctionlisting %}
     <li class="auctionitem">
-        <div class="auctionlist-image">{% if auction.image %}<img width='200' height="100" class="image" src="{{ auction.image.url }}" alt="{{auction.title}}">{% endif %}</div> 
-        <div class="auctionlist-title"> {{auction.title}}</div>
-        <div class="auctionlist-category">Category: {{auction.category}}</div> 
-        <div class="auctionlist-startingbid">{{auction.starting_bid}} €</div>
-        <div class="auctionlist-date">Created {{auction.date}} {{auction.time}}</div>       
+        <div class="auctionlist-image">
+            {% if auction.image %}
+            <img width='200' height="100" class="image" src="{{ auction.image.url }}" alt="{{auction.title}}"> 
+            {% else %} 
+            <img width='200' height="100" class="image" src="{% static 'auctions/images/default.jpg' %}" alt="{{auction.title}}"> 
+            {% endif %}
+        </div> 
+        <div class="auction-details">
+            <div class="auctionlist-title"> {{auction.title}}</div>
+            <div class="auctionlist-category">Category: {{auction.category}}</div> 
+            <div class="auctionlist-startingbid">{{auction.starting_bid}} €</div>
+            <div class="auctionlist-date">Created {{auction.date}} {{auction.time}}</div>
+        </div>       
     </li>
-    <br>
 {% endfor %}
 </ul>
 {% else %}

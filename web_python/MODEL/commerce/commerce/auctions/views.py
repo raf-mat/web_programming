@@ -17,7 +17,7 @@ def index(request):
 def create(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the
-        form = NewListing(request.POST)
+        form = NewListing(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
             # Create a new Auction instance using the data
@@ -30,8 +30,11 @@ def create(request):
             )
             # Save the article to the database
             new_listing.save()
-# return some response:
-            return HttpResponse("Thanks for your data!")
+
+            # return index.html updated:
+            return render(request, "auctions/index.html", {
+        "auctionlisting": AuctionListing.objects.all(),
+        })
     
         # If the form was invalid send the user back to fix it
         else:
