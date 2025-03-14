@@ -10,7 +10,7 @@ def index(request):
         "flights": Flight.objects.all()
     })
 
-#
+
 def flight(request, flight_id):
     #get me the flight whose id or pk (primary key)= flight_id
     flight = Flight.objects.get(pk=flight_id)
